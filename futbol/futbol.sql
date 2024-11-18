@@ -11,6 +11,29 @@ CREATE TABLE clubes(
     n_socios BIGINT UNSIGNED 
 ),
 
+CREATE TABLE temporadas(
+    temporada_id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    codigo char(10) NOT NULL UNIQUE,
+    descripcion TEXT,
+    año YEAR
+),
+
+CREATE TABLE competiciones(
+    competicion_id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    codigo char(10) NOT NULL UNIQUE,
+    nombre VARCHAR(50),
+    descripcion TEXT
+),
+
+CREATE TABLE participar(
+    participar_id  BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    temporada_id  BIGINT UNSIGNED NOT NULL,
+    competicion_id  BIGINT UNSIGNED NOT NULL,
+    posicion VARCHAR(50),
+    FOREIGN KEY (temporada_id) REFERENCES temporadas (temporada_id) ON DELETE CASCADE,
+    FOREIGN KEY  competicion_id REFERENCES competiciones (competicion_id) ON DELETE CASCADE
+),
+
 
 
 CREATE TABLE personas (
@@ -27,6 +50,32 @@ CREATE TABLE personas (
 
 ),
 
+CREATE TABLE juagadores (
+    persona_id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    peso DECIMAL(4,2),
+    altura DECIMAL(3,2),
+    FOREIGN KEY (persona_id) REFERENCES personas (persona_id) ON DELETE CASCADE
+),
+
+CREATE TABLE especialidades (
+    especialidad_id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) NOT NULL UNIQUE,
+    descripcion TEXT
+),
+
+CREATE TABLE grado(
+    persona_id BIGINT UNSIGNED NOT NULL,
+    especialidad_id  BIGINT UNSIGNED NOT NULL,
+    FOREIGN KEY (persona_id) REFERENCES personas (persona_id) ON DELETE CASCADE,
+    FOREIGN KEY (especialidad_id) REFERENCES especialidades (especialidad_id) ON DELETE CASCADE
+)
+
+CREATE TABLE entrenador (
+    persona_id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    fecha_inicio DATE,
+    FOREIGN KEY (persona_id) REFERENCES personas (persona_id) ON DELETE CASCADE
+),
+
 CREATE TABLE representantes (
     representante_id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     persona_id BIGINT UNSIGNED NOT NULL UNIQUE,
@@ -34,4 +83,5 @@ CREATE TABLE representantes (
     sueldo DECIMAL,
     FOREIGN KEY (persona_id) REFERENCES personas (persona_id)
 ),
+
 
