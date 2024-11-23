@@ -52,16 +52,19 @@ CREATE TABLE personas (
     apellidos VARCHAR(50) NOT NULL,
     telefono char(10) NOT NULL, 
     FOREIGN KEY (federacion_id) REFERENCES federaciones (federacion_id) ON DELETE CASCADE,
-    FOREIGN KEY (club_id) REFERENCES clubes (club_id) ON DELETE CASCADE
+    FOREIGN KEY (club_id) REFERENCES clubes (club_id) ON DELETE CASCADE,
+    FOREIGN KEY (representante_id) REFERENCES representantes (representante_id) ON DELETE CASCADE
 );
 
 CREATE TABLE entrenadores (
+    entrenador_id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     persona_id BIGINT UNSIGNED NOT NULL,
     fecha_inicio DATE NOT NULL,
     FOREIGN KEY (persona_id) REFERENCES personas (persona_id) ON DELETE CASCADE
 );
 
 CREATE TABLE juagadores (
+    jugador_id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     persona_id BIGINT UNSIGNED NOT NULL,
     peso DECIMAL(4,2) NOT NULL,
     altura DECIMAL(3,2) NOT NULL,
@@ -71,13 +74,14 @@ CREATE TABLE juagadores (
 CREATE TABLE especialidades (
     especialidad_id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL UNIQUE,
-    descripcion TEXT
+    descripcion TEXT,
 );
 
 CREATE TABLE grados(
-    persona_id BIGINT UNSIGNED NOT NULL,
+    jugador_id BIGINT UNSIGNED NOT NULL,
     especialidad_id  BIGINT UNSIGNED NOT NULL,
-    FOREIGN KEY (persona_id) REFERENCES personas (persona_id) ON DELETE CASCADE,
+    grado INT UNSIGNED,
+    FOREIGN KEY (jugador_id) REFERENCES juagadores (jugador_id) ON DELETE CASCADE,
     FOREIGN KEY (especialidad_id) REFERENCES especialidades (especialidad_id) ON DELETE CASCADE
 );
 
@@ -94,7 +98,4 @@ CREATE TABLE representantes (
 
 -- es 1 es valor no nulo  NOT NULL
 -- es 0 valor puede ser nulo
--- Herencia poner valor not null
-
-
-
+-- Herencia poner valor not nullº   
