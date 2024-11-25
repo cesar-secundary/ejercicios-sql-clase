@@ -9,13 +9,13 @@ CREATE TABLE camioneros (
     direccion VARCHAR(50),
     salario DECIMAL,
     poblacion VARCHAR(50)
-)
+);
 
 CREATE TABLE provincias (
     id_provincia BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     codigo char(10) UNIQUE NOT NULL,
     nombre VARCHAR(50)
-)
+);
 
 CREATE TABLE paquetes(
      id_paquete BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -26,7 +26,7 @@ CREATE TABLE paquetes(
      id_provincia BIGINT UNSIGNED NOT NULL,
      FOREIGN KEY (id_camionero) REFERENCES camioneros (id_camionero) ON DELETE CASCADE,
      FOREIGN KEY (id_provincia) REFERENCES provincias (id_provincia) ON DELETE CASCADE
-)
+);
 
 CREATE TABLE camiones(
     id_camion  BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -34,15 +34,13 @@ CREATE TABLE camiones(
     tipo VARCHAR(30),
     modelo VARCHAR(50),
     potencia DECIMAL(5,2)
-)
+);
 
 CREATE TABLE conducir (
     id_camionero BIGINT UNSIGNED NOT NULL,
     id_camion BIGINT UNSIGNED NOT NULL,
+    fecha DATE,
     FOREIGN KEY (id_camionero) REFERENCES camioneros (id_camionero) ON DELETE CASCADE,
-    FOREIGN KEY (id_camion) REFERENCES camiones (id_camion) ON DELETE CASCADE
-
-)
-
--- ALTER TABLE  se me olvido agregar el campo fecha a conducir 
-ALTER TABLE conducir ADD fecha DATE;
+    FOREIGN KEY (id_camion) REFERENCES camiones (id_camion) ON DELETE CASCADE,
+    CONSTRAINT unique_id_camionero_id_camion UNIQUE (id_camionero,id_camion)
+);
